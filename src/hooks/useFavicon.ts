@@ -16,7 +16,7 @@ export const useFavicon = () => {
           const result = await response.json();
           if (result.success && result.data?.branding) {
             const { faviconUrl, siteName, name } = result.data.branding;
-            const companyName = siteName || name || "NutriNuts";
+            const companyName = siteName || name || "Ecomus";
             document.title = `${companyName} Admin Dashboard`;
 
             if (faviconUrl) {
