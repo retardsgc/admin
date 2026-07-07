@@ -1,3 +1,7 @@
+# ========================================
+# adminfrontend .gitignore
+# ========================================
+
 # Logs
 logs
 *.log
@@ -7,19 +11,39 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependencies
+node_modules/
 
-# Editor directories and files
-.vscode/*
+# Build outputs
+dist/
+dist-ssr/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Environment/Secret files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+env-admin.json
+
+# IDE / Editor config
+.vscode/
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.vercel
+.DS_Store
+
+# Misc/Deploy
+.vercel/
+
+
+.env.production
