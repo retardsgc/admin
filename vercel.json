@@ -1,0 +1,25 @@
+{
+  "build": {
+    "env": {
+      "VITE_API_BASE_URL": "https://ecommerce-monorepo-kzb8.onrender.com/api"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://ecommerce-monorepo-kzb8.onrender.com/api/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "https://ecommerce-monorepo-kzb8.onrender.com/images/:path*"
+    },
+    {
+      "source": "/siteconfig-api/:path*",
+      "destination": "https://ecommerce-monorepo-kzb8.onrender.com/api/siteconfig/:path*"
+    },
+    {
+      "source": "/((?!_next|assets|favicon\\.ico).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
