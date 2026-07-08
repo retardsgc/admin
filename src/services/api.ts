@@ -147,17 +147,17 @@ export const siteConfigAPI = {
   },
   
   updateTheme: async (themeData: any) => {
-    const response = await api.patch('/siteconfig/theme', themeData);
+    const response = await api.put('/siteconfig/theme', themeData);
     return response.data;
   },
-  
+
   updateFeatures: async (featuresData: any) => {
-    const response = await api.patch('/siteconfig/features', featuresData);
+    const response = await api.put('/siteconfig/features', featuresData);
     return response.data;
   },
-  
+
   updateMaintenance: async (maintenanceData: any) => {
-    const response = await api.patch('/siteconfig/maintenance', maintenanceData);
+    const response = await api.put('/siteconfig/maintenance', maintenanceData);
     return response.data;
   }
 };

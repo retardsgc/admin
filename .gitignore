@@ -44,6 +44,3 @@ env-admin.json
 
 # Misc/Deploy
 .vercel/
-
-
-.env.production

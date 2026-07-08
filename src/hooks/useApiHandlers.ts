@@ -27,7 +27,7 @@ export const useApiHandlers = (state: ApiHandlersProps) => {
         limit: 10,
         search: searchTerm || undefined,
       });
-      setProducts(productsResponse.products || []);
+      setProducts(productsResponse.data || []);
       setTotalPages(productsResponse.pagination?.totalPages || 1);
 
       const categoriesResponse = await categoriesAPI.getAll({
@@ -35,7 +35,7 @@ export const useApiHandlers = (state: ApiHandlersProps) => {
         sortBy: 'sortOrder',
         sortOrder: 'asc',
       });
-      setCategories(categoriesResponse.categories || []);
+      setCategories(categoriesResponse.data || []);
     } catch (error: any) {
       console.error('Error loading dashboard data:', error);
       toast.error('Failed to load data. Please try again.');
@@ -54,7 +54,7 @@ export const useApiHandlers = (state: ApiHandlersProps) => {
         sortBy: 'sortOrder',
         sortOrder: 'asc',
       });
-      setCategories(categoriesResponse.categories || []);
+      setCategories(categoriesResponse.data || []);
       setTotalPages(categoriesResponse.pagination?.totalPages || 1);
     } catch (error: any) {
       console.error('Error loading categories:', error);
@@ -72,7 +72,7 @@ export const useApiHandlers = (state: ApiHandlersProps) => {
         limit: 10,
         search: searchTerm || undefined,
       });
-      setProducts(response.products || []);
+      setProducts(response.data || []);
       setTotalPages(response.pagination?.totalPages || 1);
     } catch (error: any) {
       console.error('Error loading category products:', error);
@@ -86,7 +86,7 @@ export const useApiHandlers = (state: ApiHandlersProps) => {
     try {
       setIsLoadingCategoryProducts(true);
       const response = await categoriesAPI.getProducts(categoryId, { limit: 100 });
-      setProductsForCategory(response.products || []);
+      setProductsForCategory(response.data || []);
     } catch (error) {
       console.error('Error loading products for category:', error);
       toast.error('Failed to load products for this category.');

@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { X, Search, Check } from 'lucide-react';
 import { getImageUrl } from '../utils/imageUrl';
-import { getApiBase } from '../services/api';
+import { getApiBase, authFetch } from '../services/api';
 
 interface Product {
   _id: string;
@@ -43,7 +43,7 @@ const ProductSelectorModal: React.FC<ProductSelectorModalProps> = ({
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${getApiBase()}/products?admin=true&limit=50`);
+      const response = await authFetch(`${getApiBase()}/products?admin=true&limit=50`);
       const result = await response.json();
       if (result.success) {
         setProducts(result.data || []);
