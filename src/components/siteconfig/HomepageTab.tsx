@@ -56,7 +56,9 @@ interface SiteConfig {
     };
     testimonialSection?: {
       title: string;
+      subtitle?: string;
       enabled?: boolean;
+      layout?: 'model1' | 'model2';
       navigationLabels?: {
         previous: string;
         next: string;
@@ -66,6 +68,11 @@ interface SiteConfig {
         role: string;
         rating: number;
         text: string;
+        heading?: string;
+        productImage?: string;
+        productName?: string;
+        productPrice?: string;
+        productLink?: string;
       }>;
     };
     featuredCollections?: {
@@ -320,41 +327,69 @@ const HomepageTab: React.FC<HomepageTabProps> = ({
               type="checkbox"
               id="testimonials-enabled"
               checked={config.homepage?.testimonialSection?.enabled !== false}
-              onChange={(e) => updateConfig('homepage.testimonialSection.enabled', e.target.checked)}
-              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <label htmlFor="testimonials-enabled" className="text-sm font-medium text-foreground">
-              Enable Section
-            </label>
-          </div>
-          <Button
-            onClick={() => addArrayItem('homepage.testimonialSection.testimonials', {
-              name: '',
-              role: '',
-              rating: 5,
-              text: ''
-            })}
-            size="sm"
-            className="flex items-center gap-2"
-            disabled={config.homepage?.testimonialSection?.enabled === false}
-          >
-            <Plus className="h-4 w-4" />
-            Add Testimonial
-          </Button>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
-          <Input
-            value={config.homepage?.testimonialSection?.title || ''}
-            onChange={(e) => updateConfig('homepage.testimonialSection.title', e.target.value)}
-            placeholder="What Our Customers Say"
-            disabled={config.homepage?.testimonialSection?.enabled === false}
+            onChange={(e) => updateConfig('homepage.testimonialSection.enabled', e.target.checked)}
+            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
+          <label htmlFor="testimonials-enabled" className="text-sm font-medium text-foreground">
+            Enable Section
+          </label>
         </div>
+        <Button
+          onClick={() => addArrayItem('homepage.testimonialSection.testimonials', {
+            name: '',
+            role: '',
+            rating: 5,
+            text: '',
+            heading: '',
+            productImage: '',
+            productName: '',
+            productPrice: '',
+            productLink: ''
+          })}
+          size="sm"
+          className="flex items-center gap-2"
+          disabled={config.homepage?.testimonialSection?.enabled === false}
+        >
+          <Plus className="h-4 w-4" />
+          Add Testimonial
+        </Button>
+      </div>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <Input
+          value={config.homepage?.testimonialSection?.title || ''}
+          onChange={(e) => updateConfig('homepage.testimonialSection.title', e.target.value)}
+          placeholder="What Our Customers Say"
+          disabled={config.homepage?.testimonialSection?.enabled === false}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1">Section Subtitle (For Model 2)</label>
+        <Input
+          value={config.homepage?.testimonialSection?.subtitle || ''}
+          onChange={(e) => updateConfig('homepage.testimonialSection.subtitle', e.target.value)}
+          placeholder="See what our satisfied customers have to say about our electronic accessories."
+          disabled={config.homepage?.testimonialSection?.enabled === false}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1">Layout Model</label>
+        <select
+          value={config.homepage?.testimonialSection?.layout || 'model1'}
+          onChange={(e) => updateConfig('homepage.testimonialSection.layout', e.target.value)}
+          className="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-background text-foreground h-10"
+          disabled={config.homepage?.testimonialSection?.enabled === false}
+        >
+          <option value="model1">Model 1: Classic Slider</option>
+          <option value="model2">Model 2: Happy Clients Grid</option>
+        </select>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Previous Button Label</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Prev Btn Label</label>
           <Input
             value={config.homepage?.testimonialSection?.navigationLabels?.previous || ''}
             onChange={(e) => updateConfig('homepage.testimonialSection.navigationLabels.previous', e.target.value)}
@@ -363,7 +398,7 @@ const HomepageTab: React.FC<HomepageTabProps> = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Next Button Label</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Next Btn Label</label>
           <Input
             value={config.homepage?.testimonialSection?.navigationLabels?.next || ''}
             onChange={(e) => updateConfig('homepage.testimonialSection.navigationLabels.next', e.target.value)}
@@ -372,65 +407,133 @@ const HomepageTab: React.FC<HomepageTabProps> = ({
           />
         </div>
       </div>
-      <div className="space-y-3">
-        {config.homepage?.testimonialSection?.testimonials?.map((testimonial, index) => (
-          <div key={index} className="p-4 border border-border rounded-lg">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Customer Name</label>
-                <Input
-                  value={testimonial.name}
-                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.name`, e.target.value)}
-                  placeholder="John Doe"
-                  disabled={config.homepage?.testimonialSection?.enabled === false}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Role/Title</label>
-                <Input
-                  value={testimonial.role}
-                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.role`, e.target.value)}
-                  placeholder="Verified Customer"
-                  disabled={config.homepage?.testimonialSection?.enabled === false}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Rating (1-5)</label>
-                <Input
-                  type="number"
-                  min="1"
-                  max="5"
-                  value={testimonial.rating}
-                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.rating`, parseInt(e.target.value))}
-                  placeholder="5"
-                  disabled={config.homepage?.testimonialSection?.enabled === false}
-                />
-              </div>
-            </div>
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-foreground mb-1">Testimonial Text</label>
-              <Textarea
-                value={testimonial.text}
-                onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.text`, e.target.value)}
-                placeholder="This product exceeded my expectations. Great quality and fast delivery!"
-                rows={3}
+    </div>
+
+    <div className="space-y-3">
+      {config.homepage?.testimonialSection?.testimonials?.map((testimonial, index) => (
+        <div key={index} className="p-4 border border-border rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Customer Name</label>
+              <Input
+                value={testimonial.name}
+                onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.name`, e.target.value)}
+                placeholder="John Doe"
                 disabled={config.homepage?.testimonialSection?.enabled === false}
               />
             </div>
-            <div className="flex justify-end">
-              <Button
-                onClick={() => removeArrayItem('homepage.testimonialSection.testimonials', index)}
-                variant="destructive"
-                size="sm"
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Role/Title/Location</label>
+              <Input
+                value={testimonial.role}
+                onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.role`, e.target.value)}
+                placeholder="Customer from USA"
                 disabled={config.homepage?.testimonialSection?.enabled === false}
-              >
-                <Trash2 className="h-4 w-4" />
-                Remove Testimonial
-              </Button>
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Rating (1-5)</label>
+              <Input
+                type="number"
+                min="1"
+                max="5"
+                value={testimonial.rating}
+                onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.rating`, parseInt(e.target.value))}
+                placeholder="5"
+                disabled={config.homepage?.testimonialSection?.enabled === false}
+              />
             </div>
           </div>
-        ))}
-      </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-foreground mb-1">Testimonial Text</label>
+            <Textarea
+              value={testimonial.text}
+              onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.text`, e.target.value)}
+              placeholder="This product exceeded my expectations. Great quality and fast delivery!"
+              rows={3}
+              disabled={config.homepage?.testimonialSection?.enabled === false}
+            />
+          </div>
+
+          {/* Conditional fields for Model 2 (Happy Clients Layout) */}
+          {config.homepage?.testimonialSection?.layout === 'model2' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 pt-3 border-t border-border">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-foreground mb-1">Review Heading (Model 2)</label>
+                <Input
+                  value={testimonial.heading || ''}
+                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.heading`, e.target.value)}
+                  placeholder="Best Online Fashion Site"
+                  disabled={config.homepage?.testimonialSection?.enabled === false}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">Product Name (Model 2)</label>
+                <Input
+                  value={testimonial.productName || ''}
+                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.productName`, e.target.value)}
+                  placeholder="3-in-1 Wireless Charger"
+                  disabled={config.homepage?.testimonialSection?.enabled === false}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">Product Price (Model 2)</label>
+                <Input
+                  value={testimonial.productPrice || ''}
+                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.productPrice`, e.target.value)}
+                  placeholder="$105.95"
+                  disabled={config.homepage?.testimonialSection?.enabled === false}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">Product Link (Model 2)</label>
+                <Input
+                  value={testimonial.productLink || ''}
+                  onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.productLink`, e.target.value)}
+                  placeholder="/products/wireless-charger"
+                  disabled={config.homepage?.testimonialSection?.enabled === false}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">Product Image URL (Model 2)</label>
+                <div className="flex gap-2">
+                  <Input
+                    value={testimonial.productImage || ''}
+                    onChange={(e) => updateConfig(`homepage.testimonialSection.testimonials.${index}.productImage`, e.target.value)}
+                    placeholder="/images/product.jpg"
+                    disabled={config.homepage?.testimonialSection?.enabled === false}
+                  />
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    type="button"
+                    onClick={() => { 
+                      setPickerTarget(`homepage.testimonialSection.testimonials.${index}.productImage`); 
+                      setPickerOpen(true); 
+                    }}
+                    disabled={config.homepage?.testimonialSection?.enabled === false}
+                  >
+                    Select
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end mt-3">
+            <Button
+              onClick={() => removeArrayItem('homepage.testimonialSection.testimonials', index)}
+              variant="destructive"
+              size="sm"
+              disabled={config.homepage?.testimonialSection?.enabled === false}
+            >
+              <Trash2 className="h-4 w-4" />
+              Remove Testimonial
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
     </div>
 
     {/* Featured Collections */}
