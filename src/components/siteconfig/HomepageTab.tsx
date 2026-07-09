@@ -366,15 +366,18 @@ const HomepageTab: React.FC<HomepageTabProps> = ({
           disabled={config.homepage?.testimonialSection?.enabled === false}
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Subtitle (For Model 2)</label>
-        <Input
-          value={config.homepage?.testimonialSection?.subtitle || ''}
-          onChange={(e) => updateConfig('homepage.testimonialSection.subtitle', e.target.value)}
-          placeholder="See what our satisfied customers have to say about our electronic accessories."
-          disabled={config.homepage?.testimonialSection?.enabled === false}
-        />
-      </div>
+      {/* Subtitle: only relevant for Model 2 */}
+      {config.homepage?.testimonialSection?.layout !== 'model1' && (
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1">Section Subtitle <span className="text-xs text-muted-foreground">(Model 2 only)</span></label>
+          <Input
+            value={config.homepage?.testimonialSection?.subtitle || ''}
+            onChange={(e) => updateConfig('homepage.testimonialSection.subtitle', e.target.value)}
+            placeholder="See what our satisfied customers have to say about our electronic accessories."
+            disabled={config.homepage?.testimonialSection?.enabled === false}
+          />
+        </div>
+      )}
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Layout Model</label>
         <select
@@ -387,26 +390,29 @@ const HomepageTab: React.FC<HomepageTabProps> = ({
           <option value="model2">Model 2: Happy Clients Grid</option>
         </select>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Prev Btn Label</label>
-          <Input
-            value={config.homepage?.testimonialSection?.navigationLabels?.previous || ''}
-            onChange={(e) => updateConfig('homepage.testimonialSection.navigationLabels.previous', e.target.value)}
-            placeholder="Previous"
-            disabled={config.homepage?.testimonialSection?.enabled === false}
-          />
+      {/* Nav labels: only relevant for Model 1 slider */}
+      {config.homepage?.testimonialSection?.layout !== 'model2' && (
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Prev Btn Label <span className="text-xs text-muted-foreground">(Model 1)</span></label>
+            <Input
+              value={config.homepage?.testimonialSection?.navigationLabels?.previous || ''}
+              onChange={(e) => updateConfig('homepage.testimonialSection.navigationLabels.previous', e.target.value)}
+              placeholder="Previous"
+              disabled={config.homepage?.testimonialSection?.enabled === false}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Next Btn Label <span className="text-xs text-muted-foreground">(Model 1)</span></label>
+            <Input
+              value={config.homepage?.testimonialSection?.navigationLabels?.next || ''}
+              onChange={(e) => updateConfig('homepage.testimonialSection.navigationLabels.next', e.target.value)}
+              placeholder="Next"
+              disabled={config.homepage?.testimonialSection?.enabled === false}
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Next Btn Label</label>
-          <Input
-            value={config.homepage?.testimonialSection?.navigationLabels?.next || ''}
-            onChange={(e) => updateConfig('homepage.testimonialSection.navigationLabels.next', e.target.value)}
-            placeholder="Next"
-            disabled={config.homepage?.testimonialSection?.enabled === false}
-          />
-        </div>
-      </div>
+      )}
     </div>
 
     <div className="space-y-3">
