@@ -27,6 +27,7 @@ out/
 .env.local
 .env.development.local
 .env.test.local
+.env.production
 .env.production.local
 .env*.local
 env-admin.json
@@ -44,4 +45,3 @@ env-admin.json
 
 # Misc/Deploy
 .vercel/
-.env.production
