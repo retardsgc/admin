@@ -9,6 +9,28 @@ const handleUnauthorizedSession = () => {
   window.dispatchEvent(new Event('admin:unauthorized'));
 };
 
+const parseJwtPayload = (token: string): Record<string, unknown> | null => {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const padded = base64 + '='.repeat((4 - (base64.length % 4 || 4)) % 4);
+    return JSON.parse(atob(padded));
+  } catch {
+    return null;
+  }
+};
+
+const isTokenValid = (token: string): boolean => {
+  if (!token || typeof token !== 'string') return false;
+  const payload = parseJwtPayload(token);
+  if (!payload) return false;
+  const exp = payload.exp as number | undefined;
+  if (!exp) return true;
+  const now = Math.floor(Date.now() / 1000);
+  return exp > now;
+};
+
 // Create axios instance with base configuration
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -20,11 +42,10 @@ const api = axios.create({
 // Add request interceptor to attach token
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('adminToken');
-  if (token) {
+  if (token && isTokenValid(token)) {
     config.headers.Authorization = `Bearer ${token}`;
-    // console.log('Attaching token to request:', config.url);
-  } else {
-    console.warn('No adminToken found in localStorage');
+  } else if (token) {
+    handleUnauthorizedSession();
   }
   return config;
 }, (error) => {

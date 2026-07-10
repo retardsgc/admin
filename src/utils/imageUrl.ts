@@ -33,8 +33,10 @@ export const getImageUrl = (imagePath: string | undefined | null, fallback: stri
     return imagePath;
   }
   
-  // Prepend the backend base URL for relative paths
-  return `${IMAGE_BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  // Ensure /images/ prefix for all relative paths
+  if (imagePath.startsWith('/images/')) return `${IMAGE_BASE_URL}${imagePath}`;
+  if (imagePath.startsWith('/')) return `${IMAGE_BASE_URL}/images${imagePath}`;
+  return `${IMAGE_BASE_URL}/images/${imagePath}`;
 };
 
 /**

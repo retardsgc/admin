@@ -121,7 +121,7 @@ const SiteConfigPanel: React.FC = () => {
         },
         body: JSON.stringify({
           config: config,
-          version: 1
+          version: (config.version || 0) + 1
         }),
       });
 

@@ -14,10 +14,6 @@
       "destination": "https://backend-ghv0.onrender.com/images/:path*"
     },
     {
-      "source": "/siteconfig-api/:path*",
-      "destination": "https://backend-ghv0.onrender.com/api/siteconfig/:path*"
-    },
-    {
       "source": "/((?!_next|assets|favicon\\.ico).*)",
       "destination": "/index.html"
     }
